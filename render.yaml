@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: ibw-orders
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeployTrigger: 'off'
+    envVars:
+      - key: NODE_VERSION
+        value: '24'
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: '1'
+      - key: SECURE_COOKIES
+        value: 'true'
+      # Supply the Neon pooled connection URL; never generate a random DB URL.
+      - key: REQUIRE_POSTGRES
+        value: 'true'
+      - key: DATABASE_URL
+        sync: false
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      # Optional: leave HOST and FROM unset/empty to skip email verification.
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_SECURE
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false

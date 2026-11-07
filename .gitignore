@@ -1,0 +1,24 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.session-secret
+ADMIN_PASSWORD.txt
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+backups/
+*.backup
+*.dump
+ibw-backup-*.json
+.pg-test*/
+.restart-test.json
+*.key
+*.pem
+*.crt
+*.log
+# UI captures can contain personal customer information; keep them local.
+screenshots/*.png
+screenshots/*.jpg
+screenshots/*.jpeg

@@ -1,0 +1,1 @@
+The PNG files in this folder were supplied by the parent visual-review workflow before the latest navigation, typography, and compact-auth fixes. They have not been recaptured after those fixes. Do not treat them as current-layout screenshots. Current layout is covered by DOM/CSS regression tests in test-layout.js; fresh browser visual review is still recommended.

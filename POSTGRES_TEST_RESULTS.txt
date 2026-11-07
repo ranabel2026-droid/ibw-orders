@@ -1,0 +1,12 @@
+
+> shein-orders@1.0.0 test:postgres
+> node test-postgres.js
+
+PASS pg.Pool, bounded pooling, required verified TLS and connection-string SSL sanitization
+PASS PostgreSQL schema parses; transactional startup migrations, immutable snapshots, no-delete/no-truncate and audit definitions
+PASS parameterized adapter queries and RETURNING ids
+PASS DB-backed session read, upsert, expiry touch, revocation and logout contracts
+PASS consistent JSON export includes every data table, sessions and audit history
+PASS atomic one-time code consumption with row locks
+PASS all generated PG statements parse, and pool closes
+IMPORTANT: live PostgreSQL/TLS end-to-end test NOT run: apt repository returned HTTP 500 and no server binaries were installed.

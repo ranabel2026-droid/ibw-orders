@@ -1,0 +1,13 @@
+node_modules
+.env
+ADMIN_PASSWORD.txt
+.session-secret
+*.sqlite*
+backups
+screenshots
+.git
+.env.*
+*.dump
+*.key
+*.pem
+.restart-test.json

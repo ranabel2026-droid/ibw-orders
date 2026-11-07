@@ -1,0 +1,38 @@
+{
+  "name": "shein-orders",
+  "version": "1.0.0",
+  "description": "IBW Orders — Arabic order-forwarding PWA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js",
+    "test:ui": "node test-ui.js && node test-admin-ui.js",
+    "test:smtp": "node test-smtp.js",
+    "test:layout": "node test-layout.js",
+    "test:postgres": "node test-postgres.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.3",
+    "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
+    "nodemailer": "^10.4.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "jsdom": "^31.0.0",
+    "pgsql-parser": "^18.3.3",
+    "yaml": "^2.9.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

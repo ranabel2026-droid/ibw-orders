@@ -1,0 +1,70 @@
+
+> shein-orders@1.0.0 test
+> node test.js
+
+PASS CSRF rejection
+PASS signup bcrypt account + email login
+PASS invalid SHEIN host, phone and marketer rejected
+PASS anonymous cannot order
+PASS submit immutable snapshot with marketer + customer email
+PASS own orders and last-order prefill
+PASS cross-customer isolation
+PASS admin protection and login
+PASS admin marketer filtering
+PASS admin status change and audit history
+PASS payment required and immutable
+PASS payment status update and audit
+PASS cash-on-delivery order snapshots and filter
+PASS CSV includes marketer and snapshot
+PASS manual backup download is SQLite
+PASS no delete endpoint
+PASS database rejects hard-delete and editing order snapshot
+PASS password is bcrypt hashed
+PASS manifest and install assets
+19 tests passed. Synthetic test order 17 retained permanently.
+
+> shein-orders@1.0.0 test:ui
+> node test-ui.js && node test-admin-ui.js
+
+PASS signup Arabic RTL screen
+PASS signup routes to authenticated order form
+PASS customer-entered marketer, payment choice required with no prefill
+PASS inline Arabic missing payment validation
+PASS Sham Cash note, submit, receipt number and payment snapshot
+PASS own orders, payment status, accessible details dialog
+PASS profile prefill excludes marketer and payment
+PASS logout and password visibility control
+All DOM UI tests passed. No visual/browser testing was performed.
+PASS admin login, orders, payment filter and payment status controls
+PASS admin filtered order details and audit timeline
+PASS admin payment status saves successfully
+All admin DOM tests passed.
+
+> shein-orders@1.0.0 test:layout
+> node test-layout.js
+
+PASS navigation clearance tracks actual height, including safe-area growth
+PASS focused form fields scroll above fixed navigation
+PASS secondary helper, step and footer text minimum 13px with stronger contrast
+PASS safe-area reservation and compact mobile hero rules
+PASS navigation spacing and resize observer clear after logout
+
+> shein-orders@1.0.0 test:smtp
+> node test-smtp.js
+
+PASS local SMTP signup, verification-required login, invalid and valid one-time code
+PASS SMTP reset, old-session revocation, changed password and code single-use
+Local SMTP test complete; no external email sent.
+
+> shein-orders@1.0.0 test:postgres
+> node test-postgres.js
+
+PASS pg.Pool, bounded pooling, required verified TLS and connection-string SSL sanitization
+PASS PostgreSQL schema parses; transactional startup migrations, immutable snapshots, no-delete/no-truncate and audit definitions
+PASS parameterized adapter queries and RETURNING ids
+PASS DB-backed session read, upsert, expiry touch, revocation and logout contracts
+PASS consistent JSON export includes every data table, sessions and audit history
+PASS atomic one-time code consumption with row locks
+PASS all generated PG statements parse, and pool closes
+IMPORTANT: live PostgreSQL/TLS end-to-end test NOT run: apt repository returned HTTP 500 and no server binaries were installed.
+PASS DB session and signed cookie survive SQLite server replacement/restart.
