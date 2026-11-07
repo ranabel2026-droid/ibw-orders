@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS codes(id SERIAL PRIMARY KEY,user_id INTEGER NOT NULL 
 CREATE TABLE IF NOT EXISTS sessions(sid TEXT PRIMARY KEY,data JSONB NOT NULL,expires BIGINT NOT NULL);
 CREATE TABLE IF NOT EXISTS schema_migrations(version INTEGER PRIMARY KEY,applied_at TIMESTAMPTZ NOT NULL DEFAULT now());
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_method TEXT NOT NULL DEFAULT 'unspecified';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS transfer_ref TEXT NOT NULL DEFAULT '';
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'غير مدفوع' CHECK(payment_status IN ('غير مدفوع','مدفوع'));
 ALTER TABLE order_history ADD COLUMN IF NOT EXISTS field TEXT NOT NULL DEFAULT 'status';
 CREATE INDEX IF NOT EXISTS idx_customer_orders ON orders(customer_id,id DESC);

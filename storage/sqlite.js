@@ -13,6 +13,7 @@ CREATE INDEX IF NOT EXISTS idx_history_order ON order_history(order_id,id);
 `);
 // Non-destructive schema migrations: legacy orders retain an explicit 'unspecified' value.
 if (!db.prepare('PRAGMA table_info(orders)').all().some(c=>c.name==='payment_method')) db.exec("ALTER TABLE orders ADD COLUMN payment_method TEXT NOT NULL DEFAULT 'unspecified'");
+if (!db.prepare('PRAGMA table_info(orders)').all().some(c=>c.name==='transfer_ref')) db.exec("ALTER TABLE orders ADD COLUMN transfer_ref TEXT NOT NULL DEFAULT ''");
 if (!db.prepare('PRAGMA table_info(orders)').all().some(c=>c.name==='payment_status')) db.exec("ALTER TABLE orders ADD COLUMN payment_status TEXT NOT NULL DEFAULT 'غير مدفوع' CHECK(payment_status IN ('غير مدفوع','مدفوع'))");
 if (!db.prepare('PRAGMA table_info(order_history)').all().some(c=>c.name==='field')) db.exec("ALTER TABLE order_history ADD COLUMN field TEXT NOT NULL DEFAULT 'status'");
 db.exec(`
