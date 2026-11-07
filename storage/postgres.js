@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS sessions(sid TEXT PRIMARY KEY,data JSONB NOT NULL,exp
 CREATE TABLE IF NOT EXISTS schema_migrations(version INTEGER PRIMARY KEY,applied_at TIMESTAMPTZ NOT NULL DEFAULT now());
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_method TEXT NOT NULL DEFAULT 'unspecified';
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS transfer_ref TEXT NOT NULL DEFAULT '';
+CREATE TABLE IF NOT EXISTS receipts(id SERIAL PRIMARY KEY,order_id INTEGER NOT NULL REFERENCES orders(id),mime TEXT NOT NULL,data BYTEA NOT NULL,size INTEGER NOT NULL,uploaded_by TEXT NOT NULL DEFAULT 'customer',created_at TIMESTAMPTZ NOT NULL DEFAULT now());
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'غير مدفوع' CHECK(payment_status IN ('غير مدفوع','مدفوع'));
 ALTER TABLE order_history ADD COLUMN IF NOT EXISTS field TEXT NOT NULL DEFAULT 'status';
 CREATE INDEX IF NOT EXISTS idx_customer_orders ON orders(customer_id,id DESC);
@@ -44,6 +45,8 @@ DROP TRIGGER IF EXISTS keep_history ON order_history;
 CREATE TRIGGER keep_history BEFORE DELETE ON order_history FOR EACH ROW EXECUTE FUNCTION ibw_forbid_removal();
 DROP TRIGGER IF EXISTS keep_history_truncate ON order_history;
 CREATE TRIGGER keep_history_truncate BEFORE TRUNCATE ON order_history FOR EACH STATEMENT EXECUTE FUNCTION ibw_forbid_removal();
+DROP TRIGGER IF EXISTS keep_receipts ON receipts;
+CREATE TRIGGER keep_receipts BEFORE DELETE ON receipts FOR EACH ROW EXECUTE FUNCTION ibw_forbid_removal();
 DROP TRIGGER IF EXISTS audit_order ON orders;
 CREATE TRIGGER audit_order AFTER INSERT OR UPDATE ON orders FOR EACH ROW EXECUTE FUNCTION ibw_audit_order();
 INSERT INTO schema_migrations(version) VALUES(1) ON CONFLICT(version) DO NOTHING;
