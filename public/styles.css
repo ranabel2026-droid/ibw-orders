@@ -93,3 +93,63 @@ html{scroll-padding-block-end:calc(var(--bottom-nav-height) + var(--nav-clearanc
 .temp-pass{margin-top:10px;display:flex;flex-direction:column;gap:6px;padding:10px;border:1px dashed #d0a24c;background:#fff9ec;border-radius:10px}.temp-pass code{font-size:18px;letter-spacing:1px;text-align:center}
 .receipt-ok{color:#2f7a3e;font-weight:700;margin:12px 0 0}.sham-ref input[type=file]{padding:9px;background:#fff}
 .reset-done{text-align:center;margin-top:12px}
+/* LTR mirror (generated) */
+html[dir=ltr] .art-bag{left:75px;right:auto;border-radius:3px 3px 12px 12px}
+html[dir=ltr] .art-bag:before{border-radius:40px 40px 0 0}
+html[dir=ltr] .art-bag i{right:10px;left:auto}
+html[dir=ltr] .art-orbit{left:25px;right:auto}
+html[dir=ltr] .art-sticker{right:15px;left:auto}
+html[dir=ltr] .art-star{right:25px;left:auto}
+html[dir=ltr] .input-wrap>.icon{left:15px;right:auto}
+html[dir=ltr] .input-wrap input,html[dir=ltr] .input-wrap textarea{padding:14px 14px 14px 43px}
+html[dir=ltr] .input-wrap input[dir=ltr]{padding-right:15px;padding-left:43px;padding-left:43px;padding-right:15px}
+html[dir=ltr] .input-wrap input[type=password]{padding-right:48px}
+html[dir=ltr] .input-wrap input[autocomplete=current-password][type=text],html[dir=ltr] .input-wrap input[autocomplete=new-password][type=text]{padding-right:48px}
+html[dir=ltr] .eye-toggle{right:12px;left:auto}
+html[dir=ltr] .optional{margin-left:4px}
+html[dir=ltr] .footer>.icon{margin-right:3px}
+html[dir=ltr] .auth-simple .surface{text-align:left}
+html[dir=ltr] .hero-monogram i{right:-20px;left:auto}
+html[dir=ltr] .section-num{margin-left:auto;margin-right:0}
+html[dir=ltr] .bottom-nav{border-radius:18px 18px 0 0}
+html[dir=ltr] .order-card-body strong{margin-left:7px}
+html[dir=ltr] .success-receipt{text-align:left}
+html[dir=ltr] .receipt-id{text-align:left}
+html[dir=ltr] .receipt-line:before{left:-8px;right:auto}
+html[dir=ltr] .receipt-line:after{right:-8px;left:auto}
+html[dir=ltr] .success-receipt dd{text-align:right}
+html[dir=ltr] .receipt-bottom .icon{margin-right:3px}
+html[dir=ltr] .success-confetti{right:0;left:0;left:0;right:0}
+html[dir=ltr] .success-confetti i{right:20%;left:auto}
+html[dir=ltr] .success-confetti i:nth-child(2){left:17%;right:auto;right:auto;left:17%}
+html[dir=ltr] .success-confetti i:nth-child(3){right:16%;left:auto}
+html[dir=ltr] .filter-bar>div{margin-right:auto;margin-left:0}
+html[dir=ltr] .history-item:not(:last-child):after{left:4px;right:auto}
+html[dir=ltr] .monogram span{padding-left:4px}
+html[dir=ltr] #toast{right:50%;left:auto}
+@media(max-width:760px){html[dir=ltr] .story-art{right:4px;left:auto}html[dir=ltr] .art-bag{left:0;right:auto}html[dir=ltr] .art-sticker{right:-5px;left:auto}html[dir=ltr] .art-star{right:0;left:auto}html[dir=ltr] .art-orbit{left:-30px;right:auto}html[dir=ltr] .hero-monogram{margin-right:6px}html[dir=ltr] .hero-monogram i{right:-12px;left:auto}html[dir=ltr] .bottom-nav{border-radius:17px 17px 0 0}html[dir=ltr] .receipt-line{margin-right:-21px;margin-left:-21px;margin-left:-21px;margin-right:-21px}html[dir=ltr] .success-confetti i{right:13%;left:auto}html[dir=ltr] .success-confetti i:nth-child(2){left:12%;right:auto}html[dir=ltr] .success-confetti i:nth-child(3){right:11%;left:auto}html[dir=ltr] .modal{border-radius:24px 24px 0 0}}
+html[dir=ltr] .payment-choice input{left:18px;right:auto}
+html[dir=ltr] .payment-choice-content>i{right:14px;left:auto}
+html[dir=ltr] .payment-status-row label{margin-right:auto;margin-left:0}
+@media(max-width:760px){html[dir=ltr] .payment-choice-content>i{right:11px;left:auto}}
+html[dir=ltr] .bottom-nav{right:50%;left:auto}
+html[dir=ltr] .sham-card{text-align:left}
+html[dir=ltr] .sham-row b,html[dir=ltr] .sham-row code{text-align:right}
+html[dir=ltr] .contact-card{text-align:left}
+html[dir=ltr] .contact-lines b{text-align:right}
+html[dir=ltr] .receipt-box{text-align:left}
+
+html[dir=ltr] .auth-panel{direction:ltr}
+html[dir=ltr] .auth-story{direction:ltr}
+html[dir=ltr] .service-tag{direction:ltr}
+@font-face{font-family:Inter;src:url(/fonts/Inter.woff2) format('woff2');font-weight:100 900;font-display:swap}
+html[lang=en] body,html[lang=en] button,html[lang=en] input,html[lang=en] select,html[lang=en] textarea{font-family:Inter,Cairo,system-ui,sans-serif;letter-spacing:-.005em}
+html[lang=en] code,html[lang=en] .sham-row b{font-family:ui-monospace,Menlo,monospace}
+html[dir=ltr] .dir-icon{transform:scaleX(-1)}
+html[dir=ltr] .sham-card,html[dir=ltr] .contact-card,html[dir=ltr] .receipt-box{text-align:left}
+.lang-toggle{display:inline-flex;align-items:center;gap:2px;padding:3px;border-radius:999px;border:1px solid rgba(120,140,100,.35);background:#fff;cursor:pointer;font:700 12px/1 Inter,Cairo,sans-serif;min-height:32px;direction:ltr}
+.lang-toggle span{padding:6px 9px;border-radius:999px;color:#6b7a60}.lang-toggle span.on{background:#111411;color:#fff}
+.account-lang{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border:1px solid #e3eadb;border-radius:14px;background:#fff;font-size:14px}
+.admin-login-link{display:inline-flex;align-items:center;justify-content:center;gap:6px;margin:14px auto 4px;width:100%;font-size:13.5px;font-weight:600;color:#4b5a42;text-decoration:underline;text-underline-offset:3px}
+.admin-login-link .icon{width:15px;height:15px}
+
