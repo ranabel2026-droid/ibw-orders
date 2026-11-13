@@ -153,3 +153,23 @@ html[dir=ltr] .sham-card,html[dir=ltr] .contact-card,html[dir=ltr] .receipt-box{
 .admin-login-link{display:inline-flex;align-items:center;justify-content:center;gap:6px;margin:14px auto 4px;width:100%;font-size:13.5px;font-weight:600;color:#4b5a42;text-decoration:underline;text-underline-offset:3px}
 .admin-login-link .icon{width:15px;height:15px}
 
+
+.amount-fields{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin:4px 0 18px}
+.amount-fields select{width:100%;min-height:48px;border-radius:12px;padding:10px 12px;font:inherit;border:1px solid #d8dfd2;background:#fff;color:inherit}
+.amount-admin{margin:16px 0;padding:16px;border:1px solid #e3eadb;border-radius:16px;background:#fbfdf8;text-align:inherit}
+.amount-admin h3{margin:0 0 8px;font-size:16px}
+.amount-due{margin:0 0 12px;font-size:14px}
+.amount-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
+.amount-grid label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:#4b5a42}
+.amount-grid input{width:100%;box-sizing:border-box;border:1px solid #d8dfd2;border-radius:10px;padding:11px 12px;font:inherit;background:#fff;text-align:left}
+.admin-money{display:flex;flex-direction:column;gap:12px;margin:0 0 22px}
+.money-totals{background:#fff;border:1px solid #e3eadb;border-radius:16px;padding:14px 16px;box-shadow:0 6px 18px rgba(40,60,30,.06)}
+.money-totals h3{margin:0 0 10px;font-size:14px;color:#2f3d27}
+.money-totals-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.money-totals-grid div{background:#f7faf3;border-radius:10px;padding:10px 12px}
+.money-totals-grid span{display:block;font-size:12px;color:#7a8e68}
+.money-totals-grid strong{display:block;margin-top:2px;font-size:15px;color:#1f2a19}
+.admin-search{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.admin-search input{width:100%;box-sizing:border-box;border:1px solid #d8dfd2;border-radius:10px;padding:10px 12px;font:inherit;background:#fff}
+@media (max-width:700px){.amount-fields{grid-template-columns:1fr}.money-totals-grid{grid-template-columns:1fr 1fr}}
+html[dir=ltr] .amount-grid input{text-align:left}

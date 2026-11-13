@@ -1,6 +1,7 @@
 const {Pool,types}=require('pg');
 // This app's ids, timestamps and counts are safely within JS integer precision.
 types.setTypeParser(20,value=>Number(value));
+types.setTypeParser(1700,value=>value===null?null:Number(value));
 const SCHEMA=`
 CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY,email TEXT UNIQUE NOT NULL,password_hash TEXT NOT NULL,verified INTEGER NOT NULL DEFAULT 0,created_at TIMESTAMPTZ NOT NULL DEFAULT now());
 CREATE TABLE IF NOT EXISTS orders(id SERIAL PRIMARY KEY,customer_id INTEGER NOT NULL REFERENCES users(id),customer_email TEXT NOT NULL,full_name TEXT NOT NULL,phone TEXT NOT NULL,address TEXT NOT NULL,cart_link TEXT NOT NULL,marketer TEXT NOT NULL,notes TEXT NOT NULL DEFAULT '',status TEXT NOT NULL DEFAULT 'جديد' CHECK(status IN ('جديد','قيد التنفيذ','تم الشحن','تم التسليم','ملغي')),created_at TIMESTAMPTZ NOT NULL DEFAULT now(),payment_method TEXT NOT NULL DEFAULT 'unspecified',payment_status TEXT NOT NULL DEFAULT 'غير مدفوع' CHECK(payment_status IN ('غير مدفوع','مدفوع')));
@@ -12,6 +13,11 @@ ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_method TEXT NOT NULL DEFAULT
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS transfer_ref TEXT NOT NULL DEFAULT '';
 CREATE TABLE IF NOT EXISTS receipts(id SERIAL PRIMARY KEY,order_id INTEGER NOT NULL REFERENCES orders(id),mime TEXT NOT NULL,data BYTEA NOT NULL,size INTEGER NOT NULL,uploaded_by TEXT NOT NULL DEFAULT 'customer',created_at TIMESTAMPTZ NOT NULL DEFAULT now());
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'غير مدفوع' CHECK(payment_status IN ('غير مدفوع','مدفوع'));
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_amount NUMERIC;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_currency TEXT NOT NULL DEFAULT '';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_received NUMERIC;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_remaining NUMERIC;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS owner_take NUMERIC;
 ALTER TABLE order_history ADD COLUMN IF NOT EXISTS field TEXT NOT NULL DEFAULT 'status';
 CREATE INDEX IF NOT EXISTS idx_customer_orders ON orders(customer_id,id DESC);
 CREATE INDEX IF NOT EXISTS idx_history_order ON order_history(order_id,id);
@@ -19,7 +25,7 @@ CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires);
 CREATE INDEX IF NOT EXISTS idx_codes_user ON codes(user_id,purpose);
 CREATE OR REPLACE FUNCTION ibw_forbid_removal() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'Orders and audit records are permanent'; END; $$;
 CREATE OR REPLACE FUNCTION ibw_order_snapshot() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
- IF (to_jsonb(NEW)-'status'-'payment_status') IS DISTINCT FROM (to_jsonb(OLD)-'status'-'payment_status') THEN RAISE EXCEPTION 'Order snapshots are immutable'; END IF;
+ IF (to_jsonb(NEW)-'status'-'payment_status'-'amount_received'-'amount_remaining'-'owner_take') IS DISTINCT FROM (to_jsonb(OLD)-'status'-'payment_status'-'amount_received'-'amount_remaining'-'owner_take') THEN RAISE EXCEPTION 'Order snapshots are immutable'; END IF;
  RETURN NEW;
 END; $$;
 CREATE OR REPLACE FUNCTION ibw_immutable_history() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'Audit records are immutable'; END; $$;
