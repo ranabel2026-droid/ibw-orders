@@ -22,12 +22,12 @@ assert.equal(r.status,201,JSON.stringify(r.body));
 const order=r.body.order,id=order.id;
 assert.equal(Number(order.payment_amount),1500.5);
 assert.equal(order.payment_currency,'SYP');
-assert.equal(order.amount_received,undefined);
 assert.equal(order.owner_take,undefined);
-assert.equal(order.amount_remaining,undefined);
+assert.ok('amount_received' in order);
+assert.ok('amount_remaining' in order);
 const list=await user('/api/orders');
 assert.equal(list.body.orders[0].owner_take,undefined);
-assert.equal(list.body.orders[0].amount_received,undefined);
+assert.ok('amount_received' in list.body.orders[0]);
 // customer cannot patch amounts
 assert.equal((await user(`/api/admin/orders/${id}/amounts`,'PATCH',{amount_received:1,amount_remaining:1,owner_take:1})).status,403);
 const adm=client();await adm('/api/session');
@@ -55,7 +55,7 @@ console.log('PASS required/invalid amounts, customer fields stripped, admin save
 // customer still cannot see admin money after update
 const again=(await user('/api/orders')).body.orders[0];
 assert.equal(again.owner_take,undefined);
-assert.equal(again.amount_received,undefined);
+assert.equal(Number(again.amount_received),500);
 assert.equal(Number(again.payment_amount),1500.5);
 // snapshot still immutable
 const Database=require('better-sqlite3');

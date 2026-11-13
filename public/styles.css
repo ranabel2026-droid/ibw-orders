@@ -173,3 +173,38 @@ html[dir=ltr] .sham-card,html[dir=ltr] .contact-card,html[dir=ltr] .receipt-box{
 .admin-search input{width:100%;box-sizing:border-box;border:1px solid #d8dfd2;border-radius:10px;padding:10px 12px;font:inherit;background:#fff}
 @media (max-width:700px){.amount-fields{grid-template-columns:1fr}.money-totals-grid{grid-template-columns:1fr 1fr}}
 html[dir=ltr] .amount-grid input{text-align:left}
+
+.customer-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;text-align:inherit}
+.customer-amounts div{background:#f7faf3;border:1px solid #e3eadb;border-radius:12px;padding:10px}
+.customer-amounts span{display:block;font-size:11.5px;color:#7a8e68}
+.customer-amounts strong{display:block;margin-top:3px;font-size:14px}
+.payments-box{margin:14px 0;padding:16px;border:1px solid #e3eadb;border-radius:16px;background:#fbfdf8}
+.payments-box h3{margin:0 0 10px;font-size:16px}
+.pay-list,.pay-mini{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.pay-item{background:#fff;border:1px solid #e3eadb;border-radius:12px;padding:10px 12px}
+.pay-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pay-item small{display:block;margin-top:4px;color:#7a8e68;font-size:12px}
+.pay-status{font-size:12px;font-weight:700;border-radius:999px;padding:3px 8px}
+.pay-status.pending{background:#fff4d6;color:#8a5a00}
+.pay-status.confirmed{background:#e4f6e8;color:#1f7a36}
+.pay-status.rejected{background:#fde8e8;color:#9b1c1c}
+.pay-reason{color:#9b1c1c}
+.pay-actions{display:flex;gap:8px;margin-top:10px}
+.pay-actions .btn{flex:1;min-height:40px}
+.add-payment{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.add-payment[hidden]{display:none}
+.card-amounts{font-size:13px;color:#4b5a42}
+.pay-mini{margin:8px 0 0;font-size:12px}
+.pay-mini li{padding:4px 0}
+.pay-mini li.pending{color:#8a5a00}
+.pay-mini li.confirmed{color:#1f7a36}
+.pay-mini li.rejected{color:#9b1c1c}
+.pending-badge{display:inline-flex;align-items:center;margin-inline-start:6px;background:#fff4d6;color:#8a5a00;font-size:11px;font-weight:700;border-radius:999px;padding:3px 8px}
+.pending-filter{display:flex;align-items:center;gap:8px;font-size:13px}
+.pending-banner{display:block;width:100%;margin:0 0 12px;border:0;border-radius:12px;background:#fff4d6;color:#6a4500;font:700 14px inherit;padding:12px 14px;cursor:pointer;text-align:inherit}
+.admin-badges{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:flex-end}
+@media (max-width:420px){.customer-amounts{grid-template-columns:1fr}.pay-actions{flex-direction:column}}
+.add-payment .payment-choice.compact,.add-payment label.payment-choice{display:flex;align-items:center;gap:8px;border:1px solid #d8dfd2;border-radius:10px;padding:10px 12px;margin:6px 0;position:relative}
+.add-payment .payment-choice input{position:static!important;opacity:1!important;width:18px;height:18px;accent-color:#111411}
+#pay-ref-wrap[hidden],.add-payment [hidden]{display:none!important}
+.add-payment input[name=amount]{width:100%;box-sizing:border-box;border:1px solid #d8dfd2;border-radius:10px;padding:11px 12px;font:inherit}

@@ -18,6 +18,9 @@ ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_currency TEXT NOT NULL DEFAU
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_received NUMERIC;
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS amount_remaining NUMERIC;
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS owner_take NUMERIC;
+CREATE TABLE IF NOT EXISTS payments(id SERIAL PRIMARY KEY,order_id INTEGER NOT NULL REFERENCES orders(id),amount NUMERIC NOT NULL,currency TEXT NOT NULL,method TEXT NOT NULL CHECK(method IN ('sham_cash','cod')),transfer_ref TEXT NOT NULL DEFAULT '',note TEXT NOT NULL DEFAULT '',receipt_id INTEGER REFERENCES receipts(id),status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','confirmed','rejected')),reason TEXT NOT NULL DEFAULT '',created_at TIMESTAMPTZ NOT NULL DEFAULT now(),reviewed_at TIMESTAMPTZ,actor TEXT NOT NULL DEFAULT 'customer');
+CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id,id);
+
 ALTER TABLE order_history ADD COLUMN IF NOT EXISTS field TEXT NOT NULL DEFAULT 'status';
 CREATE INDEX IF NOT EXISTS idx_customer_orders ON orders(customer_id,id DESC);
 CREATE INDEX IF NOT EXISTS idx_history_order ON order_history(order_id,id);
@@ -53,6 +56,18 @@ DROP TRIGGER IF EXISTS keep_history_truncate ON order_history;
 CREATE TRIGGER keep_history_truncate BEFORE TRUNCATE ON order_history FOR EACH STATEMENT EXECUTE FUNCTION ibw_forbid_removal();
 DROP TRIGGER IF EXISTS keep_receipts ON receipts;
 CREATE TRIGGER keep_receipts BEFORE DELETE ON receipts FOR EACH ROW EXECUTE FUNCTION ibw_forbid_removal();
+DROP TRIGGER IF EXISTS keep_payments ON payments;
+CREATE TRIGGER keep_payments BEFORE DELETE ON payments FOR EACH ROW EXECUTE FUNCTION ibw_forbid_removal();
+DROP TRIGGER IF EXISTS keep_payments_truncate ON payments;
+CREATE TRIGGER keep_payments_truncate BEFORE TRUNCATE ON payments FOR EACH STATEMENT EXECUTE FUNCTION ibw_forbid_removal();
+CREATE OR REPLACE FUNCTION ibw_payment_snapshot() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+ IF (to_jsonb(NEW)-'status'-'reason'-'reviewed_at') IS DISTINCT FROM (to_jsonb(OLD)-'status'-'reason'-'reviewed_at') THEN RAISE EXCEPTION 'Payment snapshots are immutable'; END IF;
+ RETURN NEW;
+END; $$;
+DROP TRIGGER IF EXISTS immutable_payments ON payments;
+CREATE TRIGGER immutable_payments BEFORE UPDATE ON payments FOR EACH ROW EXECUTE FUNCTION ibw_payment_snapshot();
+DROP TRIGGER IF EXISTS immutable_payments_history ON payments;
+
 DROP TRIGGER IF EXISTS audit_order ON orders;
 CREATE TRIGGER audit_order AFTER INSERT OR UPDATE ON orders FOR EACH ROW EXECUTE FUNCTION ibw_audit_order();
 INSERT INTO schema_migrations(version) VALUES(1) ON CONFLICT(version) DO NOTHING;
@@ -74,9 +89,9 @@ module.exports=async function openPostgres(databaseUrl){
   prepare(sql){const converted=params(sql);return {
    get:async(...args)=>(await pool.query(converted,args)).rows[0],
    all:async(...args)=>(await pool.query(converted,args)).rows,
-   run:async(...args)=>{const insert=/^\s*INSERT INTO (users|orders)\b/i.test(sql);const r=await pool.query(converted+(insert?' RETURNING id':''),args);return {changes:r.rowCount,lastInsertRowid:insert?r.rows[0]?.id:undefined};}
+   run:async(...args)=>{const insert=/^\s*INSERT INTO (users|orders|receipts|payments)\b/i.test(sql);const r=await pool.query(converted+(insert?' RETURNING id':''),args);return {changes:r.rowCount,lastInsertRowid:insert?r.rows[0]?.id:undefined};}
   };},
-  async exportData(){const c=await pool.connect();try{await c.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY');const tables={};for(const t of ['users','sessions','orders','order_history','codes','schema_migrations'])tables[t]=(await c.query('SELECT * FROM '+t+' ORDER BY '+(t==='sessions'?'sid':t==='schema_migrations'?'version':'id'))).rows;await c.query('COMMIT');return {format:'ibw-orders-postgres-export',version:1,exported_at:new Date().toISOString(),tables};}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}},
+  async exportData(){const c=await pool.connect();try{await c.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY');const tables={};for(const t of ['users','sessions','orders','order_history','codes','schema_migrations','receipts','payments'])tables[t]=(await c.query('SELECT * FROM '+t+' ORDER BY '+(t==='sessions'?'sid':t==='schema_migrations'?'version':'id'))).rows;await c.query('COMMIT');return {format:'ibw-orders-postgres-export',version:1,exported_at:new Date().toISOString(),tables};}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}},
   async consumeCode(userId,purpose,hash){const c=await pool.connect();try{await c.query('BEGIN');const row=(await c.query('SELECT * FROM codes WHERE user_id=$1 AND purpose=$2 ORDER BY id DESC LIMIT 1 FOR UPDATE',[userId,purpose])).rows[0];let ok=false;if(row&&row.expires>=Date.now()&&row.attempts<5){await c.query('UPDATE codes SET attempts=attempts+1 WHERE id=$1',[row.id]);if(row.hash===hash){await c.query('DELETE FROM codes WHERE id=$1',[row.id]);ok=true;}}await c.query('COMMIT');return ok;}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}},
   close:()=>pool.end()
  };

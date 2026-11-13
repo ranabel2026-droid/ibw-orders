@@ -1,4 +1,4 @@
-const CACHE='ibw-shell-v7';
+const CACHE='ibw-shell-v8';
 const SHELL=['/','/styles.css','/i18n.js','/app.js','/shamcash-qr.png','/icons/icon-192.png','/icons/icon-512.png','/fonts/Cairo-Regular.ttf','/fonts/Cairo-Bold.ttf'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
